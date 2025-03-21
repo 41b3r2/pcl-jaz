@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Sheet</title>
+    <style>
+    body{
+        padding: 20px;
+        background-color: lightgrey;
+    }
+
+    .title{
+        font-family: Arial, sans-serif;
+        margin-left: 20px;
+        display: flex;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .container {
+        text-align: left;
+    }
+
+    .top-datacontainer{
+        font-family: Arial, sans-serif;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 350px;
+        text-align: left;
+        position: relative;
+        left: 80px;
+    }
+
+    .truck-datacontainer{
+        border-radius: 10px;
+        width: 90%;
+        max-width: 350px;
+        text-align: left;
+        position: relative;
+        left: 80px;
+        top: 45px;
+    }
+
+    .truckers-detailscontainer{
+        border-radius: 10px;
+        width: 90%;
+        max-width: 350px;
+        text-align: left;
+        position: relative;
+        left: 570px;
+        bottom: 360px;
+    }
+
+    .provision-liquidationscontainer{
+        border-radius: 1000px;
+        width: 100%;
+        max-width: 430px;
+        text-align: left;
+        position: relative;
+        left: 570px;
+        bottom: 360px;
+    }
+
+    .kilometerscontainer{
+        border-radius: 1000px;
+        width: 100%;
+        max-width: 430px;
+        text-align: left;
+        position: relative;
+        left: 1040px;
+        bottom: 910px;
+    }
+
+    .data {
+        display: flex;
+        width: 100%;
+        max-width: 350px;
+        align-items: center;
+        margin-bottom: 10px;
+        background: #f0f0f0;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .data label {
+        flex: 1;
+        margin-right: 1ch;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+    }
+
+    .data select, .data input {
+        flex: 3;
+        padding: 3px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .button-container {
+            position: absolute;
+            top: 200px;
+            left: 30cm;
+            background: #f0f0f0;
+            padding: 10px;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .button-row button, .full-width {
+            padding: 8px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: white;
+            border-radius: 4px;
+        }
+        .full-width {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="title">
+        <img src="static/images/Logo1.png" alt="Logo" height="80">
+        <h1><i>TOP SHEET</i></h1>
+    </div>
+    <div class="container">
+
+    <div class="top-datacontainer">
+    <div class="data">
+        <label for="topSheetId">Top Sheet ID</label>
+        <input type="text" id="topSheetId" name="topSheetId">
+    </div>
+
+    <div class="data">
+        <label for="dateOfRelease">Date of Release</label>
+        <input type="date" id="dateOfRelease" name="dateOfRelease">
+    </div>
+
+    <div class="data">
+        <label for="dateOfReturn">Date of Return</label>
+        <input type="date" id="dateOfReturn" name="dateOfReturn">
+    </div>
+
+    </div>
+
+    <div class="truck-datacontainer">
+    <div class="data">
+        <label for="truckNo">Truck No.</label>
+        <select id="truckNo" name="truckNo">
+            <option value="truck0"></option>
+            <option value="truck1">Truck 1</option>
+            <option value="truck2">Truck 2</option>
+            <option value="truck3">Truck 3</option>
+        </select>
+    </div>
+
+    <div class="data">
+        <label for="truckType">Truck Type</label>
+        <input type="text" id="truckType" name="truckType">
+    </div>
+
+    <div class="data">
+        <label for="truckCapacity">Truck Capacity</label>
+        <input type="text" id="truckCapacity" name="truckCapacity">
+    </div>
+    </div>
+
+    <div class="truckers-detailscontainer">
+        <h2><i>TRUCKERS DETAILS</i></h2>
+    <div class="data">
+        <label for="driverName">Driver's Name</label>
+        <input type="text" id="driverName" name="driverName">
+    </div>
+    <div class="data">
+        <label for="helper1">Helper 1</label>
+        <input type="text" id="helper1" name="helper1">
+    </div>
+    <div class="data">
+        <label for="helper2">Helper 2</label>
+        <input type="text" id="helper2" name="helper2">
+    </div>
+
+    </div>
+    <div class="provision-liquidationscontainer">
+        <h2><i>PROVISION & LIQUIDATION</i></h2>
+    <div class="data">
+        <label for="fuel">Fuel(php)</label>
+        <input type="text" id="fuel" name="fuel">
+    </div>
+    <div class="data">
+        <label for="toll">Toll(php)</label>
+        <input type="text" id="toll" name="toll">
+    </div>
+    <div class="data">
+        <label for="allowance">Allowance(php)</label>
+        <input type="text" id="allowance" name="allowance">
+    </div>
+    <div class="data">
+        <label for="misc">Misc(php)</label>
+        <input type="text" id="misc" name="misc">
+    </div>
+    <div class="data">
+        <label for="totalBudget">Total Budget</label>
+        <input type="text" id="totalBudget" name="totalBudget">
+    </div>
+    <div class="data">
+        <label for="totalLiquidated">Total Liquidated</label>
+        <input type="text" id="totalLiquidated" name="totalLiquidated">
+    </div>
+    <div class="data">
+        <label for="difference">Difference</label>
+        <input type="text" id="difference" name="difference">
+    </div>
+    </div>
+
+    <div class="kilometerscontainer">
+        <h2><i>KILOMETERS</i></h2>
+    <div class="data">
+        <label for="odoIN">Odo In</label>
+        <input type="text" id="odoIN" name="odoIN">
+    </div>
+    <div class="data">
+        <label for="odoOut">Odo Out</label>
+        <input type="text" id="odoOut" name="odoOut">
+    </div>
+    </div>
+
+    <div class="button-container">
+        <button class="full-width">New</button>
+        <div class="button-row">
+            <button>Last</button>
+            <button>First</button>
+        </div>
+        <div class="button-row">
+            <button>Back</button>
+            <button>Forward</button>
+        </div>
+        <button class="full-width">Exit</button>
+    </div>
+
+</body>
+</html>

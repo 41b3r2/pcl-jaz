@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL Truck Allocation System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+        }
+        
+        .logo {
+            width: 200px;
+            height: auto;
+        }
+        
+        .top-sheet-section, .truck-info-section, .crew-details-section,
+        .kilometers-section, .provision-section, .navigation-section {
+            padding: 15px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid #cc0000;
+        }
+        
+        .section-title {
+            background-color: #cc0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .form-group {
+            margin-bottom: 10px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 10px;
+            border: 2px solid #cc0000;
+            border-radius: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #cc0000;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .btn-primary {
+            background-color: #cc0000;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 300px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .add-row-btn {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background-color: #cc0000;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            right: 50px;
+            bottom: 10px;
+        }
+        
+        .table-wrapper {
+            position: relative;
+            padding-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .col {
+                flex: 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+            }
+            
+            .logo {
+                width: 150px;
+                margin-bottom: 10px;
+            }
+            
+            .table-container {
+                overflow-x: scroll;
+            }
+            
+            th, td {
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgODAiPgogIDxnIGZpbGw9IiNjYzAwMDAiPgogICAgPHBhdGggZD0iTTUwLDE1IEw4MCw0MCBMNTAsNjUgTDIwLDQwIFoiIHRyYW5zZm9ybT0icm90YXRlKC00NSA1MCA0MCkiLz4KICAgIDxwYXRoIGQ9Ik0xMDAsMjAgTDEwMCw2MCBMMTIwLDYwIEwxMjAsNDUgTDEzMCw0NSBMMTMwLDYwIEwxNTAsNjAgTDE1MCwyMCBMMTMwLDIwIEwxMzAsNDAgTDEyMCw0MCBMMTIwLDIwIFoiLz4KICAgIDxwYXRoIGQ9Ik0xNjAsMjAgTDE2MCw2MCBMMTgwLDYwIEwxODAsNDUgQyE4MCw0NSAxOTUsNDUgMTk1LDMyLjUgQzE5NSwyMCAxODAsMjAgMTgwLDIwIFogTTE4MCwyNSBDMTgwLDI1IDE5MCwyNSAxOTAsMzIuNSBDMTkwLDQwIDE4MCw0MCAxODAsNDAgWiIvPgogICAgPHBhdGggZD0iTTIwMCwyMCBMMjQwLDIwIEwyNDAsMjUgTDIyNSwyNSBMMjI1LDYwIEwyMTUsNjAgTDIxNSwyNSBMMjAwLDI1IFoiLz4KICAgIDwvZz4KPC9zdmc+" alt="PCL Logo" class="logo">
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="top-sheet-section">
+                    <div class="section-title">Top Sheet ID</div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="TS-0001">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Release</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Return</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="truck-info-section">
+                    <div class="form-group">
+                        <label>Truck No.</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Truck Type</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Truck Capacity</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="crew-details-section">
+                    <div class="section-title">Allocation Crew Details</div>
+                    <div class="form-group">
+                        <label>Driver Name</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Helper 1 Name</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Helper 2 Name</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Budget</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="kilometers-section">
+                    <div class="section-title">Kilometers</div>
+                    <div class="form-group">
+                        <label>Odo in</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Odo out</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                </div>
+                
+                <div class="navigation-section">
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="width: 100%;">Create New Sheet</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary">First</button>
+                        <button class="btn btn-secondary">Last</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary">&lt;</button>
+                        <button class="btn btn-secondary">&gt;</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="provision-section">
+                    <div class="section-title">Provision & Liquidation</div>
+                    <div class="form-group">
+                        <label>Fuel (Php)</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Toll (Php)</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Parking (Php)</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Allowance (Php)</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Miscellaneous (Php)</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label>Total Budget</label>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Liquidated</label>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Difference</label>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-wrapper">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Waybill No.</th>
+                            <th>Date</th>
+                            <th>FO/PO/STO</th>
+                            <th>Delivery Type</th>
+                            <th>Account</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Rate</th>
+                            <th>Call Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="waybillTable">
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="time" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="time" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="time" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="time" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="time" class="form-control"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="add-row-btn" id="addRowBtn">+</button>
+            <button class="save-btn">Save</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calculate totals
+            const calculateTotals = function() {
+                const budget = parseFloat(document.querySelector('.crew-details-section input[placeholder="Value"]:nth-of-type(4)').value) || 0;
+                
+                const fuel = parseFloat(document.querySelector('.provision-section input:nth-of-type(1)').value) || 0;
+                const toll = parseFloat(document.querySelector('.provision-section input:nth-of-type(2)').value) || 0;
+                const parking = parseFloat(document.querySelector('.provision-section input:nth-of-type(3)').value) || 0;
+                const allowance = parseFloat(document.querySelector('.provision-section input:nth-of-type(4)').value) || 0;
+                const misc = parseFloat(document.querySelector('.provision-section input:nth-of-type(5)').value) || 0;
+                
+                const totalLiquidated = fuel + toll + parking + allowance + misc;
+                const difference = budget - totalLiquidated;
+                
+                document.querySelector('.provision-section input:nth-of-type(6)').value = budget.toFixed(2);
+                document.querySelector('.provision-section input:nth-of-type(7)').value = totalLiquidated.toFixed(2);
+                document.querySelector('.provision-section input:nth-of-type(8)').value = difference.toFixed(2);
+            };
+            
+            // Add expense input event listeners
+            const expenseInputs = document.querySelectorAll('.provision-section input:not([readonly])');
+            expenseInputs.forEach(input => {
+                input.addEventListener('input', calculateTotals);
+            });
+            
+            // Budget input event listener
+            const budgetInput = document.querySelector('.crew-details-section input[placeholder="Value"]:nth-of-type(4)');
+            budgetInput.addEventListener('input', calculateTotals);
+            
+            // Add row to waybill table
+            document.getElementById('addRowBtn').addEventListener('click', function() {
+                const tbody = document.getElementById('waybillTable');
+                const newRow = document.createElement('tr');
+                
+                newRow.innerHTML = `
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="date" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="time" class="form-control"></td>
+                `;
+                
+                tbody.appendChild(newRow);
+            });
+            
+            // Calculate ODO difference
+            const odoInputs = document.querySelectorAll('.kilometers-section input');
+            odoInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const odoIn = parseFloat(odoInputs[0].value) || 0;
+                    const odoOut = parseFloat(odoInputs[1].value) || 0;
+                    const difference = odoOut - odoIn;
+                    
+                    // You could add a field to display the difference if needed
+                });
+            });
+        });
+    </script>
+</body>
+</html>
